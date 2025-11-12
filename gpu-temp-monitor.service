@@ -1,0 +1,34 @@
+[Unit]
+Description=GPU Temperature Monitor Service
+After=network.target
+
+[Service]
+Type=simple
+User=root
+ExecStart=/usr/local/bin/gpu-temp-monitor
+Restart=always
+RestartSec=10
+
+# Environment variables
+Environment="APIALERTS_API_KEY=your-api-key-here"
+Environment="APIALERTS_CHANNEL=gpu-monitoring"
+Environment="GPU_TEMP_WARNING=70"
+Environment="GPU_TEMP_CRITICAL=80"
+Environment="GPU_CHECK_INTERVAL=5"
+
+# Alternative: Load from environment file
+# EnvironmentFile=/etc/gpu-temp-monitor/env
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=gpu-temp-monitor
+
+# Security hardening (optional)
+ProtectSystem=strict
+ProtectHome=yes
+NoNewPrivileges=true
+PrivateTmp=yes
+
+[Install]
+WantedBy=multi-user.target
